@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="col my-3">
+    {% if post.published_at %}
+      <div class="date">{{ post.published_at }}</div>
+    {% else %}
+      <a href="{% url 'post-publish' post.pk %}" class="btn btn-primary">Publish</a>
+    {% endif %}
+    <div class="post">
+      <h1>
+        <a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a>
+      </h1>
+      <div class="my-3">
+        <a href="{% url 'post-update' post.pk %}" class="btn btn-warning">
+          <span class="material-symbols-outlined">edit_note</span>
+        </a>
+        <a href="{% url 'post-delete' post.pk %}" class="btn btn-danger">
+          <span class="material-symbols-outlined">delete</span>
+        </a>
+      </div>
+      <p align="justify">{{ post.content | linebreaksbr }}</p>
+    </div>
+  </div>
+{% endblock content %}
