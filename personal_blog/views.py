@@ -12,9 +12,10 @@ class PostListView(ListView):
     model = Post
     template_name = "post_list.html"
     context_object_name = "posts"
-    queryset = Post.objects.filter(published_at__lte=timezone.now()).order_by(
-        "-published_at"
-    )
+    queryset = Post.objects.filter(published_at__isnull=False).order_by("-published_at")
+    # queryset = Post.objects.filter(published_at__lte=timezone.now()).order_by(
+    #     "-published_at"
+    # )
 
 
 class PostDetailView(DetailView):
@@ -47,19 +48,19 @@ class PostDeleteView(View):
         return redirect("post-list")
 
 
-# class PostUpdateView(LoginRequiredMixin, UpdateView):
-#     model = Post
-#     form_class = PostForm
-#     template_name = "post_create.html"
-#     success_url = reverse_lazy("post-list")
-
-
 class PostPublishView(LoginRequiredMixin, View):
     def get(self, request, pk, *args, **kwargs):
         post = get_object_or_404(Post, pk=pk)
         post.published_at = timezone.now()
         post.save()
         return redirect("post-list")
+
+
+# class PostUpdateView(LoginRequiredMixin, UpdateView):
+#     model = Post
+#     form_class = PostForm
+#     template_name = "post_create.html"
+#     success_url = reverse_lazy("post-list")
 
 
 class PostUpdateView(LoginRequiredMixin, View):
@@ -78,3 +79,9 @@ class PostUpdateView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             return redirect("post-detail", pk=post.pk)
+        else:
+            return render(
+                request,
+                "post_create.html",
+                {"form": form},
+            )
