@@ -1,0 +1,27 @@
+{% load static %}
+ 
+<div class="page-header">
+  {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}" class="top-menu">
+      <span class="material-symbols-outlined lg-icons">logout</span>
+    </a>
+    <a href="{% url 'drafts' %}" class="top-menu">
+      <span class="material-symbols-outlined lg-icons">edit_square</span>
+    </a>
+    <a href="{% url 'post-create' %}" class="top-menu">
+      <span class="material-symbols-outlined lg-icons">add</span>
+    </a>
+  {% else %}
+    <a href="{% url 'login' %}" class="top-menu">
+      <span class="material-symbols-outlined lg-icons">login</span>
+    </a>
+  {% endif %}
+  <h1>
+    <a href="/">
+      <img src="{% static 'img/favicon.ico' %}"
+           alt="Personal Blog"
+           width="90px;">
+      Personal Blog
+    </a>
+  </h1>
+</div>

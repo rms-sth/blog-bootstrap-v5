@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -45,12 +46,17 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, "Post was created successfully.")
         return super().form_valid(form)
 
 
 class PostDeleteView(DeleteView):
     model = Post
     success_url = reverse_lazy("post-list")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Post was deleted successfully.")
+        return super().form_valid(form)
 
 
 # class PostDeleteView(View):
@@ -90,8 +96,10 @@ class PostUpdateView(LoginRequiredMixin, View):
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
+            messages.success(self.request, "Post was updated successfully.")
             return redirect("post-detail", pk=post.pk)
         else:
+            messages.error(self.request, "Post was not updated successfully.")
             return render(
                 request,
                 "post_create.html",
