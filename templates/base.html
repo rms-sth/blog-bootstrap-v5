@@ -19,6 +19,7 @@
           rel="stylesheet">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+ 
     {% block extra_style %}
     {% endblock extra_style %}
   </head>
@@ -39,9 +40,12 @@
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script>
-      setTimeout(function() {
-          bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
-      }, 3000)
+      let alert = document.querySelector('.alert')
+      if (alert) {
+          setTimeout(function() {
+              bootstrap.Alert.getOrCreateInstance(alert).close();
+          }, 3000)
+      }
     </script>
 
     {% block extra_script %}
