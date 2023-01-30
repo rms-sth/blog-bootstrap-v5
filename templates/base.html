@@ -19,10 +19,15 @@
           rel="stylesheet">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
-    {% block style %}
-    {% endblock style %}
+    {% block extra_style %}
+    {% endblock extra_style %}
   </head>
   <body>
+ 
+    {% block modal %}
+ 
+    {% endblock modal %}
+ 
     <div class="page-header">
       {% if user.is_authenticated %}
         <a href="{% url 'logout' %}" class="top-menu">
@@ -55,5 +60,7 @@
       </div>
     </div>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    {% block extra_script %}
+    {% endblock extra_script %}
   </body>
 </html>

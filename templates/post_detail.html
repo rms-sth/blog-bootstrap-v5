@@ -4,6 +4,37 @@
   Personal Blog | {{ post.title }}
 {% endblock title %}
 
+{% block modal %}
+  <!-- Modal -->
+  <div class="modal fade"
+       id="postModal"
+       tabindex="-1"
+       aria-labelledby="postModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="postModalLabel">{{ post.title|truncatechars:55 }}</h1>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'post-delete' post.pk %}" method="post">
+            {% csrf_token %}
+            <h6>Are you sure you want to delete ?</h6>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-outline-danger">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock modal %}
+
 {% block content %}
   <div class="col my-3">
     {% if post.published_at %}
@@ -22,9 +53,18 @@
           <a href="{% url 'post-update' post.pk %}" class="btn btn-warning">
             <span class="material-symbols-outlined">edit_note</span>
           </a>
-          <a href="{% url 'post-delete' post.pk %}" class="btn btn-danger">
+
+          <!-- <a href="{% url 'post-delete' post.pk %}" class="btn btn-danger post-delete">
             <span class="material-symbols-outlined">delete</span>
-          </a>
+          </a> -->
+
+          <!-- Button trigger modal -->
+          <button type="button"
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#postModal">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
         </div>
       {% endif %}
       <p align="justify">{{ post.content | linebreaksbr }}</p>

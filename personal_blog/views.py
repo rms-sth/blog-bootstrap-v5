@@ -2,7 +2,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView, DetailView, ListView, UpdateView, View
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+    View,
+)
 
 from personal_blog.forms import PostForm
 from personal_blog.models import Post
@@ -41,11 +48,16 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostDeleteView(View):
-    def get(self, request, pk, *args, **kwargs):
-        post = get_object_or_404(Post, pk=pk)
-        post.delete()
-        return redirect("post-list")
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = reverse_lazy("post-list")
+
+
+# class PostDeleteView(View):
+#     def get(self, request, pk, *args, **kwargs):
+#         post = get_object_or_404(Post, pk=pk)
+#         post.delete()
+#         return redirect("post-list")
 
 
 class PostPublishView(LoginRequiredMixin, View):
