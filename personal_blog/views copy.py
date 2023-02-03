@@ -39,6 +39,7 @@ def post_draft_list(request):
 
 @login_required
 def post_create(request):
+    form = PostForm()
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
@@ -46,13 +47,11 @@ def post_create(request):
             post.author = request.user
             post.save()
             return redirect("drafts")
-    else:
-        form = PostForm()
-        return render(
-            request,
-            "post_create.html",
-            {"form": form},
-        )
+    return render(
+        request,
+        "post_create.html",
+        {"form": form},
+    )
 
 
 @login_required
@@ -65,19 +64,19 @@ def post_delete(request, pk):
 @login_required
 def post_update(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    form = PostForm(instance=post)
 
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
             return redirect("post-detail", pk=post.pk)
-    else:
-        form = PostForm(instance=post)
-        return render(
-            request,
-            "post_create.html",
-            {"form": form},
-        )
+
+    return render(
+        request,
+        "post_create.html",
+        {"form": form},
+    )
 
 
 @login_required
