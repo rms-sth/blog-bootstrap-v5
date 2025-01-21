@@ -60,11 +60,18 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
-    success_url = reverse_lazy("post-list")
+    # success_url = reverse_lazy("post-list")
 
     def form_valid(self, form):
         messages.success(self.request, "Post was deleted successfully.")
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        post = self.get_object()
+        if post.published_at:
+            return reverse_lazy("post-list")
+        else:
+            return reverse_lazy("draft-list")
 
 
 # class PostDeleteView(View):
