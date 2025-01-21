@@ -70,3 +70,16 @@ h4 {
 .lg-icons {
   font-size: 55px !important;
 }
+
+.link {
+  background: none;
+  border: none;
+  color: #fcfcfc;
+  /* Change color to match link color */
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  /* Remove padding to make it look more like a link */
+  font-family: inherit;
+  font-size: inherit;
+}

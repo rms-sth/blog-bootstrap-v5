@@ -31,6 +31,14 @@ class PostDetailView(DetailView):
     template_name = "post_detail.html"
     context_object_name = "post"
 
+    def get_queryset(self):
+        queryset = (
+            get_object_or_404(Post, id=self.kwargs["pk"])
+            .filter(pk=self.kwargs["pk"], published_at__isnull=False)
+            .order_by("-published_at")
+        )
+        return queryset
+
 
 class DraftListView(LoginRequiredMixin, ListView):
     model = Post
@@ -50,7 +58,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy("post-list")
 
